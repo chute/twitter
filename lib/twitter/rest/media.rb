@@ -77,6 +77,7 @@ module Twitter
         Twitter::REST::Request.new(self, :post, 'https://upload.twitter.com/1.1/media/upload.json',
                                    command: 'INIT',
                                    media_type: 'video/mp4',
+                                   media_category: 'tweet_video',
                                    total_bytes: file.size,
                                    **options).perform
       end

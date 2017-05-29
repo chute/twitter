@@ -331,7 +331,7 @@ module Twitter
         if !(File.basename(media) =~ /\.mp4$/)
           upload_media_simple(media)
         else
-          upload_media_chunked(media)
+          upload_media_chunked(media, media_category: 'tweet_video')
         end
       end
 

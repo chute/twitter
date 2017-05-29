@@ -449,7 +449,10 @@ describe Twitter::REST::Tweets do
     context 'with a mp4 video' do
       it 'requests the correct resources' do
         @client.update_with_media('You always have options', fixture('1080p.mp4'))
-        expect(a_request(:post, 'https://upload.twitter.com/1.1/media/upload.json')).to have_been_made.times(3)
+
+        expect(a_request(:post, 'https://upload.twitter.com/1.1/media/upload.json').with { |request| request.body == URI.encode_www_form(command: 'INIT', media_type: 'video/mp4', media_category: 'tweet_video', total_bytes: 4062) }).to have_been_made
+        expect(a_request(:post, 'https://upload.twitter.com/1.1/media/upload.json').with { |request| request.body =~ /APPEND/ }).to have_been_made
+        expect(a_request(:post, 'https://upload.twitter.com/1.1/media/upload.json').with { |request| request.body == URI.encode_www_form(command: 'FINALIZE', media_id: '470030289822314497') }).to have_been_made
         expect(a_post('/1.1/statuses/update.json')).to have_been_made
       end
     end
